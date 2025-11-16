@@ -4,7 +4,7 @@ import Sidebar from "../components/sidebar";
 import Output from "../components/output";
 
 const socket = io(import.meta.env.VITE_SOCKET_URL);
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const EditorPage = () => {
   const [joined, setJoined] = useState(false);
@@ -67,6 +67,7 @@ const EditorPage = () => {
     setCode(newCode);
     socket.emit("codeChange", { roomId, code: newCode });
     socket.emit("typing", { roomId, userName });
+    console.log(typing)
   };
 
   if (!joined) {
