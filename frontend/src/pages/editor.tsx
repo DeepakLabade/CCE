@@ -3,7 +3,7 @@ import Editor from "@monaco-editor/react";
 import Sidebar from "../components/sidebar";
 import Output from "../components/output";
 
-const socket = io("http://localhost:5000");
+const socket = io(import.meta.env.VITE_SOCKET_URL);
 import React, { useEffect, useState } from "react";
 
 const EditorPage = () => {

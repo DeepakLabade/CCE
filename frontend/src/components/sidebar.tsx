@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { executeCode } from '../api/api';
 import type { Socket } from 'socket.io-client';
 import ReactPlayer from 'react-player'
-import peer from '../services/peer';
 
 const Sidebar = ({
   roomId,
@@ -78,18 +77,18 @@ const Sidebar = ({
     } catch (error) {}
   };
 
-  const handleCallUser = useCallback( async () => {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        audio: true,
-        video: true
-      })
+  // const handleCallUser = useCallback( async () => {
+  //     const stream = await navigator.mediaDevices.getUserMedia({
+  //       audio: true,
+  //       video: true
+  //     })
 
-      const offer = await peer.getOffer() 
-      socket.emit("user:call", {to: roomId, offer})
+  //     const offer = await peer.getOffer() 
+  //     socket.emit("user:call", {to: roomId, offer})
 
-      //@ts-ignore
-      setStream(stream)
-  }, [])
+  //     //@ts-ignore
+  //     setStream(stream)
+  // }, [])
 
   return (
     <div className="w-60 bg-white border-r border-gray-200 p-6 flex flex-col">
@@ -166,7 +165,7 @@ const Sidebar = ({
       >
         Run Code
       </button>
-      <button onClick={handleCallUser}>Call</button>
+      <button>Call</button>
     </div>
   );
 };
