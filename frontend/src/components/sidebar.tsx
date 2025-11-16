@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { executeCode } from '../api/api';
 import type { Socket } from 'socket.io-client';
+import ReactPlayer from 'react-player'
+import peer from '../services/peer';
 
 const Sidebar = ({
   roomId,
@@ -32,6 +34,14 @@ const Sidebar = ({
   setError: any
 }) => {
   const [copySuccess, setCopySuccess] = useState("");
+  const [stream, setStream] = useState()
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current && stream) {
+      videoRef.current.srcObject = stream;
+    }
+  }, [stream]);
 
   const copyRoomId = () => {
     navigator.clipboard.writeText(roomId);
@@ -68,6 +78,19 @@ const Sidebar = ({
     } catch (error) {}
   };
 
+  const handleCallUser = useCallback( async () => {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: true
+      })
+
+      const offer = await peer.getOffer() 
+      socket.emit("user:call", {to: roomId, offer})
+
+      //@ts-ignore
+      setStream(stream)
+  }, [])
+
   return (
     <div className="w-60 bg-white border-r border-gray-200 p-6 flex flex-col">
       <div className="mb-6">
@@ -86,6 +109,17 @@ const Sidebar = ({
           )}
         </div>
       </div>
+
+      {stream && (
+  <video
+    ref={videoRef}
+    autoPlay
+    muted
+    playsInline
+    width={120}
+    height={90}
+  />
+)}
 
       <div className="flex-1">
         <h3 className="text-sm font-medium text-gray-700 mb-3">
@@ -132,6 +166,7 @@ const Sidebar = ({
       >
         Run Code
       </button>
+      <button onClick={handleCallUser}>Call</button>
     </div>
   );
 };
