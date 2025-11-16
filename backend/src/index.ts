@@ -71,18 +71,15 @@ io.on("connection", (socket) => {
       io.to(currentRoom).emit("userJoined", Array.from(rooms.get(currentRoom)));
     }
     console.log("user Disconnected");
-  });
+  })
+
+
+  socket.on("user:call", ({to, offer}) => {
+    io.to(to).emit("incoming:call", {from:socket.id, offer})
+  })
 });
 
 const port = process.env.PORT || 5000;
-
-// const __dirname = path.resolve();
-
-// app.use(express.static(path.join(__dirname, "/frontend/dist")));
-
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
-// });
 
 server.listen(port, () => {
   console.log("server is working on port 5000");
