@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import "./App.css";
 import EditorPage from "./pages/editor";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
