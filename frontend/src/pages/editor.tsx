@@ -166,7 +166,7 @@ function startSession() {
 }`}
               </pre>
 
-              <p className="text-green-400 mt-6 text-sm">
+              <p className="text-g-reen-400 mt-6 text-sm">
                 ● Enter details above
               </p>
             </div>
